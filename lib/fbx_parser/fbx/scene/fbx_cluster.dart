@@ -11,13 +11,13 @@ class FbxCluster extends FbxDeformer {
   static const int ADDITIVE = 1;
   static const int TOTAL_ONE = 2;
 
-  Uint32List indexes;
-  Float32List weights;
-  Matrix4 transform;
-  Matrix4 transformLink;
+  late Uint32List? indexes;
+  late Float32List? weights;
+  late Matrix4 transform;
+  late Matrix4 transformLink;
   int linkMode = NORMALIZE;
 
-  FbxCluster(int id, String name, FbxElement element, FbxScene scene)
+  FbxCluster(int id, String? name, FbxElement element, FbxScene scene)
     : super(id, name, 'Cluster', element, scene) {
 
     for (final c in element.children) {
@@ -30,12 +30,12 @@ class FbxCluster extends FbxDeformer {
       if (c.id == 'Indexes') {
         indexes = Uint32List(p.length);
         for (var i = 0, len = p.length; i < len; ++i) {
-          indexes[i] = toInt(p[i]);
+          indexes![i] = toInt(p[i]);
         }
       } else if (c.id == 'Weights') {
         weights = Float32List(p.length);
         for (var i = 0, len = p.length; i < len; ++i) {
-          weights[i] = toDouble(p[i]);
+          weights![i] = toDouble(p[i]);
         }
       } else if (c.id == 'Transform') {
         transform = Matrix4.identity();
@@ -51,7 +51,7 @@ class FbxCluster extends FbxDeformer {
     }
   }
 
-  FbxNode getLink() =>
+  FbxNode? getLink() =>
       connectedTo.isNotEmpty ? connectedTo[0] as FbxNode : null;
 }
 

@@ -4,12 +4,12 @@
 
 class FbxElement {
   String id;
-  List properties;
+  late List properties;
   List<FbxElement> children = [];
 
-  FbxElement(this.id, [int propertyCount]) {
+  FbxElement(this.id, [int? propertyCount]) {
     if (propertyCount != null) {
-      properties = List<dynamic>(propertyCount);
+      properties = [propertyCount];
     } else {
       properties = <dynamic>[];
     }

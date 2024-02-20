@@ -5,8 +5,8 @@ import 'fbx_reference_mode.dart';
 class FbxLayerElement<T> {
   FbxMappingMode mappingMode = FbxMappingMode.None;
   FbxReferenceMode referenceMode = FbxReferenceMode.Direct;
-  List<int> indexArray;
-  List<T> data;
+  late List<int> indexArray;
+  late List<T> data;
 
   int get length => data.length;
 

@@ -27,14 +27,14 @@ This library is based on the [dart_fbx](https://github.com/brendan-duncan/dart_f
 ## Properties
 ```
   Fbx3DViewer({
-    @required this.size,
-    @required this.fbxPath,                 // "assets/asd.fbx" or sd card path
-    @required this.lightPosition,
-    @required this.initialZoom,
-    @required this.animationSpeed,          // 0-1
-    @required this.fbx3DViewerController,
-    @required this.refreshMilliseconds,
-    @required this.endFrame,                //max frame to play
+    required this.size,
+    required this.fbxPath,                 // "assets/asd.fbx" or sd card path
+    required this.lightPosition,
+    required this.initialZoom,
+    required this.animationSpeed,          // 0-1
+    required this.fbx3DViewerController,
+    required this.refreshMilliseconds,
+    required this.endFrame,                //max frame to play
     this.texturePath,                       // "assets/asd.png" or sd card path
     this.backgroundColor = const Color(0xff353535),
     this.showInfo = false,

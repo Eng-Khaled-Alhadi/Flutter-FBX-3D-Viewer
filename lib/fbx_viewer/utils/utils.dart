@@ -32,7 +32,7 @@ Offset gen2DPointFrom3D(Math.Vector3 v) {
   return Offset(vn.x, vn.y);
 }
 
-Color randomColor({double opacity}) => Color((Random().nextDouble() * 0xFFFFFF).toInt() << 0).withOpacity(opacity ?? 1.0);
+Color randomColor({double? opacity}) => Color((Random().nextDouble() * 0xFFFFFF).toInt() << 0).withOpacity(opacity ?? 1.0);
 
 int convertABGRtoARGB(int color) {
   int newColor = color;

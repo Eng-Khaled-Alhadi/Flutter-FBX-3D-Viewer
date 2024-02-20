@@ -16,16 +16,16 @@ class FbxAnimLayer extends FbxObject {
   static const int SCALE_MULTIPLY = 0;
   static const int SCALE_ADDITIVE = 1;
 
-  FbxProperty weight;
-  FbxProperty mute;
-  FbxProperty solo;
-  FbxProperty lock;
-  FbxProperty color;
-  FbxProperty blendMode;
-  FbxProperty rotationAccumulationMode;
-  FbxProperty scaleAccumulationMode;
+  late FbxProperty weight;
+  late FbxProperty mute;
+  late FbxProperty solo;
+  late FbxProperty lock;
+  late FbxProperty color;
+  late FbxProperty blendMode;
+  late FbxProperty rotationAccumulationMode;
+  late FbxProperty scaleAccumulationMode;
 
-  FbxAnimLayer(int id, String name, FbxElement element, FbxScene scene)
+  FbxAnimLayer(int id, String? name, FbxElement element, FbxScene scene)
     : super(id, name, 'AnimLayer', element, scene) {
     weight = addProperty('Weight', 100.0);
     mute = addProperty('Mute', false);
@@ -38,21 +38,21 @@ class FbxAnimLayer extends FbxObject {
 
     for (final c in element.children) {
       if (c.id == 'Weight') {
-        weight.value = c.getDouble(0);
+        weight?.value = c.getDouble(0);
       } else if (c.id == 'Mute') {
-        weight.value = c.getInt(0) != 0;
+        weight?.value = c.getInt(0) != 0;
       } else if (c.id == 'Solo') {
-        solo.value = c.getInt(0) != 0;
+        solo?.value = c.getInt(0) != 0;
       } else if (c.id == 'Lock') {
-        lock.value = c.getInt(0) != 0;
+        lock?.value = c.getInt(0) != 0;
       } else if (c.id == 'Color') {
-        color.value = Vector3(c.getDouble(0), c.getDouble(1), c.getDouble(2));
+        color?.value = Vector3(c.getDouble(0), c.getDouble(1), c.getDouble(2));
       } else if (c.id == 'BlendMode') {
-        blendMode.value = c.getInt(0);
+        blendMode?.value = c.getInt(0);
       } else if (c.id == 'RotationAccumulationMode') {
-        rotationAccumulationMode.value = c.getInt(0);
+        rotationAccumulationMode?.value = c.getInt(0);
       } else if (c.id == 'ScaleAccumulationMode') {
-        scaleAccumulationMode.value = c.getInt(0);
+        scaleAccumulationMode?.value = c.getInt(0);
       }
     }
   }

@@ -4,13 +4,13 @@ version: 1.0.0
 homepage: https://github.com/klaszlo8207/Flutter-FBX-3D-Viewer
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.19.0 <3.0.0'
 
 dependencies:
-  vector_math: ^2.0.8
-  provider: ^4.0.2
-  archive: '>= 2.0.0 <3.0.0'
-  image: '>= 2.0.0 <3.0.0'
+  vector_math: ^2.1.4
+  provider: ^6.1.1
+  archive: ^3.4.10
+  image: ^4.1.7
 
   flutter:
     sdk: flutter
@@ -20,6 +20,6 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
-    #assets:
-    #- assets/knight.fbx
+    assets:
+    - assets/
 

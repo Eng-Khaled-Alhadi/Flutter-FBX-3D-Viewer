@@ -8,16 +8,16 @@ import 'package:vector_math/vector_math.dart';
 
 
 class FbxNode extends FbxObject {
-  FbxProperty translate;
-  FbxProperty rotate;
-  FbxProperty scale;
-  FbxProperty visibility;
-  Matrix4 transform;
-  double evalTime;
-  FbxNode parent;
+  FbxProperty? translate;
+  late FbxProperty? rotate;
+  late FbxProperty? scale;
+  FbxProperty? visibility;
+  late Matrix4 transform;
+  double? evalTime;
+  FbxNode? parent;
   List<FbxNode> children = [];
 
-  FbxNode(int id, String name, String type, FbxElement element, FbxScene scene)
+  FbxNode(int id, String? name, String type, FbxElement element, FbxScene scene)
     : super(id, name, type, element, scene) {
     translate = addProperty('Lcl Translation', Vector3(0.0, 0.0, 0.0));
     rotate = addProperty('Lcl Rotation', Vector3(0.0, 0.0, 0.0));
@@ -29,16 +29,16 @@ class FbxNode extends FbxObject {
         for (final p in c.children) {
           if (p.id == 'P') {
             if (p.properties[0] == 'Lcl Translation') {
-              translate.value = Vector3(p.getDouble(4), p.getDouble(5),
+              translate?.value = Vector3(p.getDouble(4), p.getDouble(5),
                   p.getDouble(6));
             } else if (p.properties[0] == 'Lcl Rotation') {
-              rotate.value = Vector3(p.getDouble(4), p.getDouble(5),
+              rotate?.value = Vector3(p.getDouble(4), p.getDouble(5),
                   p.getDouble(6));
             } else if (p.properties[0] == 'Lcl Scaling') {
-              scale.value = Vector3(p.getDouble(4), p.getDouble(5),
+              scale?.value = Vector3(p.getDouble(4), p.getDouble(5),
                   p.getDouble(6));
             } else if (p.properties[0] == 'Visibility') {
-              visibility.value = p.getInt(4);
+              visibility?.value = p.getInt(4);
             }
           }
         }
@@ -46,16 +46,16 @@ class FbxNode extends FbxObject {
         for (final p in c.children) {
           if (p.id == 'Property') {
             if (p.properties[0] == 'Lcl Translation') {
-              translate.value = Vector3(p.getDouble(3), p.getDouble(4),
+              translate?.value = Vector3(p.getDouble(3), p.getDouble(4),
                   p.getDouble(5));
             } else if (p.properties[0] == 'Lcl Rotation') {
-              rotate.value = Vector3(p.getDouble(3), p.getDouble(4),
+              rotate?.value = Vector3(p.getDouble(3), p.getDouble(4),
                   p.getDouble(5));
             } else if (p.properties[0] == 'Lcl Scaling') {
-              scale.value = Vector3(p.getDouble(3), p.getDouble(4),
+              scale?.value = Vector3(p.getDouble(3), p.getDouble(4),
                   p.getDouble(5));
             } else if (p.properties[0] == 'Visibility') {
-              visibility.value = p.getInt(3);
+              visibility?.value = p.getInt(3);
             }
           }
         }
@@ -80,21 +80,21 @@ class FbxNode extends FbxObject {
 
   Matrix4 globalTransform() {
     if (parent != null) {
-      return (parent.globalTransform() * localTransform()) as Matrix4;
+      return (parent!.globalTransform() * localTransform()) as Matrix4;
     }
     return localTransform();
   }
 
-  Matrix4 evalLocalTransform() => scene.getNodeLocalTransform(this);
+  Matrix4? evalLocalTransform() => scene?.getNodeLocalTransform(this);
 
-  Matrix4 evalGlobalTransform() => scene.getNodeGlobalTransform(this);
+  Matrix4? evalGlobalTransform() => scene?.getNodeGlobalTransform(this);
 
   void resetLocalTransform() {
     transform = Matrix4.identity();
 
-    final t = translate.value as Vector3;
-    final r = rotate.value as Vector3;
-    final s = scale.value as Vector3;
+    final t = translate?.value as Vector3;
+    final r = rotate?.value as Vector3;
+    final s = scale?.value as Vector3;
     transform.translate(t.x, t.y, t.z);
     transform.rotateZ(radians(r.z));
     rotateY(transform, radians(r.y));

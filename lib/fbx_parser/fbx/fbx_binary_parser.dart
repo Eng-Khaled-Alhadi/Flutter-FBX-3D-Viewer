@@ -27,7 +27,7 @@ class FbxBinaryParser extends FbxParser {
   static const int TYPE_STRING = 83; // 'S'
   static const String NAME_SEP = '\x00\x01';
 
-  InputBuffer _input;
+  InputBuffer? _input;
 
   static bool isValidFile(InputBuffer input) {
     final fp = input.offset;
@@ -52,45 +52,45 @@ class FbxBinaryParser extends FbxParser {
 
     _input = input;
 
-    _input.skip(2); // \x1a\x00, not sure
-    _input.skip(4); // file version
+    _input?.skip(2); // \x1a\x00, not sure
+    _input?.skip(4); // file version
   }
 
   @override
-  FbxElement nextElement() {
+  FbxElement? nextElement() {
     if (_input == null) {
       return null;
     }
 
-    final endOffset = _input.readUint32();
-    final propCount = _input.readUint32();
-    /*final propLength =*/ _input.readUint32();
+    final endOffset = _input!.readUint32();
+    final propCount = _input!.readUint32()  ?? 0;
+    /*final propLength =*/ _input!.readUint32();
 
     if (endOffset == 0) {
       return null;
     }
 
-    var elemId = _input.readString(_input.readByte());
+    var elemId = _input!.readString(_input!.readByte());
 
     final elem = FbxElement(elemId, propCount);
 
     for (var i = 0; i < propCount; ++i) {
-      final s = _input.readByte();
-      elem.properties[i] = _readData(_input, s);
+      final s = _input!.readByte();
+      elem.properties[i] = _readData(_input!, s);
     }
 
     const _BLOCK_SENTINEL_LENGTH = 13;
 
-    if (_input.position < endOffset) {
-      while (_input.position < (endOffset - _BLOCK_SENTINEL_LENGTH)) {
-        elem.children.add(nextElement());
+    if (_input!.position < endOffset) {
+      while (_input!.position < (endOffset - _BLOCK_SENTINEL_LENGTH)) {
+        elem.children.add(nextElement()!);
       }
 
       // Should be [0]*_BLOCK_SENTINEL_LENGTH
-      _input.skip(_BLOCK_SENTINEL_LENGTH);
+      _input!.skip(_BLOCK_SENTINEL_LENGTH);
     }
 
-    if (_input.position != endOffset) {
+    if (_input!.position != endOffset) {
       throw Exception('scope length not reached, something is wrong');
     }
 

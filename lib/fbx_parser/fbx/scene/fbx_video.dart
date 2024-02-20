@@ -4,10 +4,10 @@ import 'fbx_object.dart';
 import 'fbx_scene.dart';
 
 class FbxVideo extends FbxObject {
-  String filename;
-  int useMipMap;
+  late String filename;
+  late int useMipMap;
 
-  FbxVideo(int id, String name, String type, FbxElement element, FbxScene scene)
+  FbxVideo(int id, String? name, String type, FbxElement element, FbxScene scene)
     : super(id, name, type, element, scene) {
     for (final c in element.children) {
       if (c.id == 'UseMipMap') {

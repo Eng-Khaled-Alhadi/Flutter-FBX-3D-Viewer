@@ -23,8 +23,11 @@ class Object3DDetails {
   int animationLength;
   double animationSpeed;
 
-  Object3DDetails(this.animationPath, this.animationTexturePath, this.rotation, this.zoom, this.animationLength, this.animationSpeed,
-      {this.color = Colors.black, this.lightColor = Colors.white, this.gridTileSize = 0.5});
+  Object3DDetails(this.animationPath, this.animationTexturePath, this.rotation,
+      this.zoom, this.animationLength, this.animationSpeed,
+      {this.color = Colors.black,
+      this.lightColor = Colors.white,
+      this.gridTileSize = 0.5});
 }
 
 List<Object3DDetails> _objects = [
@@ -135,9 +138,9 @@ class ChangeVariants with ChangeNotifier {
 }
 
 class _ExampleState extends State<Example> {
-  Fbx3DViewerController _fbx3DAnimationController;
-  Timer _renderTimer;
-  ChangeVariants _changeVariantsSet;
+  late Fbx3DViewerController _fbx3DAnimationController;
+  late Timer _renderTimer;
+  late ChangeVariants _changeVariantsSet;
 
   _ExampleState() {
     _fbx3DAnimationController = Fbx3DViewerController();
@@ -159,11 +162,13 @@ class _ExampleState extends State<Example> {
     _renderTimer = Timer.periodic(const Duration(milliseconds: 50), (t) {
       final d = 10.0;
       _changeVariantsSet.lightAngle += 0.8;
-      if (_changeVariantsSet.lightAngle > 360) _changeVariantsSet.lightAngle = 0;
+      if (_changeVariantsSet.lightAngle > 360)
+        _changeVariantsSet.lightAngle = 0;
       double fx = sin(Math.radians(_changeVariantsSet.lightAngle)) * d;
       double fz = cos(Math.radians(_changeVariantsSet.lightAngle)) * d;
       _changeVariantsSet.lightPosition.setValues(-fx, -fz, 0);
-      _fbx3DAnimationController.setLightPosition(_changeVariantsSet.lightPosition);
+      _fbx3DAnimationController
+          .setLightPosition(_changeVariantsSet.lightPosition);
     });
   }
 
@@ -177,7 +182,8 @@ class _ExampleState extends State<Example> {
 
   _nextObj() async {
     _changeVariantsSet.objIndex++;
-    if (_changeVariantsSet.objIndex >= _objects.length) _changeVariantsSet.objIndex = 0;
+    if (_changeVariantsSet.objIndex >= _objects.length)
+      _changeVariantsSet.objIndex = 0;
     _fbx3DAnimationController.refresh();
 
     Future.delayed(Duration(milliseconds: 50), () {
@@ -200,69 +206,78 @@ class _ExampleState extends State<Example> {
         backgroundColor: const Color(0xff353535),
         body: SafeArea(
             child: Stack(
-              children: <Widget>[
-                Fbx3DViewer(
-                  lightPosition: Math.Vector3(20, 10, 10),
-                  lightColor: Colors.black.withOpacity(0.2),
-                  color: changeVariantsGet._rndColor ? randomColor(opacity: 0.8) : Colors.black.withOpacity(0.8),
-                  refreshMilliseconds: 1,
-                  size: Size(ScreenUtils.width, ScreenUtils.height),
-                  initialZoom: object.zoom,
-                  endFrame: object.animationLength,
-                  initialAngles: object.rotation,
-                  fbxPath: object.animationPath,
-                  texturePath: object.animationTexturePath,
-                  animationSpeed: object.animationSpeed,
-                  fbx3DViewerController: _fbx3DAnimationController,
-                  showInfo: true,
-                  showWireframe: changeVariantsGet._showWireframe,
-                  wireframeColor: changeVariantsGet._rndColor ? randomColor(opacity: 0.5) : Colors.blue.withOpacity(0.5),
-                  onHorizontalDragUpdate: (d) {
-                    if (object.animationPath.contains("turtle") || object.animationPath.contains("knight"))
-                      _fbx3DAnimationController.rotateZ(d);
-                    else
-                      _fbx3DAnimationController.rotateZ(-d);
-                  },
-                  onVerticalDragUpdate: (d) => _fbx3DAnimationController.rotateX(d),
-                  onZoomChangeListener: (zoom) => object.zoom = zoom,
-                  onRotationChangeListener: (Math.Vector3 rotation) => object.rotation.setFrom(rotation),
-                  panDistanceToActivate: 50,
-                  gridsTileSize: object.gridTileSize,
-                ),
-                FlatButton(
-                  color: Colors.white,
-                  child: Text("Change model"),
-                  onPressed: () => _nextObj(),
-                ),
-                Align(
-                  child: SizedBox(
-                      height: 120,
-                      width: ScreenUtils.width / 2,
-                      child: Column(
-                        children: <Widget>[
-                          CheckboxListTile(
-                            title: Text("Wireframe"),
-                            value: changeVariantsGet._showWireframe,
-                            onChanged: (v) {
-                              _changeVariantsSet.showWireframe = v;
-                              _fbx3DAnimationController.showWireframe(_changeVariantsSet.showWireframe);
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
-                          ),
-                          CheckboxListTile(
-                            title: Text("Rnd colors"),
-                            value: changeVariantsGet._rndColor,
-                            onChanged: (v) {
-                              _changeVariantsSet.rndColor = v;
-                              _fbx3DAnimationController.setRandomColors(randomColor(opacity: 0.7), randomColor(opacity: 0.3));
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
-                          )
-                        ],
-                      )),
-                  alignment: Alignment.topRight,
-                )
-              ],
-            )));
+          children: <Widget>[
+            Fbx3DViewer(
+              lightPosition: Math.Vector3(20, 10, 10),
+              lightColor: Colors.black.withOpacity(0.2),
+              color: changeVariantsGet._rndColor
+                  ? randomColor(opacity: 0.8)
+                  : Colors.black.withOpacity(0.8),
+              refreshMilliseconds: 1,
+              size: Size(ScreenUtils.width, ScreenUtils.height),
+              initialZoom: object.zoom,
+              endFrame: object.animationLength,
+              initialAngles: object.rotation,
+              fbxPath: object.animationPath,
+              texturePath: object.animationTexturePath,
+              animationSpeed: object.animationSpeed,
+              fbx3DViewerController: _fbx3DAnimationController,
+              showInfo: true,
+              showWireframe: changeVariantsGet._showWireframe,
+              wireframeColor: changeVariantsGet._rndColor
+                  ? randomColor(opacity: 0.5)
+                  : Colors.blue.withOpacity(0.5),
+              onHorizontalDragUpdate: (d) {
+                if (object.animationPath.contains("turtle") ||
+                    object.animationPath.contains("knight"))
+                  _fbx3DAnimationController.rotateZ(d);
+                else
+                  _fbx3DAnimationController.rotateZ(-d);
+              },
+              onVerticalDragUpdate: (d) => _fbx3DAnimationController.rotateX(d),
+              onZoomChangeListener: (zoom) => object.zoom = zoom,
+              onRotationChangeListener: (Math.Vector3 rotation) =>
+                  object.rotation.setFrom(rotation),
+              panDistanceToActivate: 50,
+              gridsTileSize: object.gridTileSize,
+            ),
+            MaterialButton(
+              color: Colors.white,
+              child: Text("Change model"),
+              onPressed: () => _nextObj(),
+            ),
+            Align(
+              child: SizedBox(
+                  height: 120,
+                  width: ScreenUtils.width / 2,
+                  child: Column(
+                    children: <Widget>[
+                      CheckboxListTile(
+                        title: Text("Wireframe"),
+                        value: changeVariantsGet._showWireframe,
+                        onChanged: (v) {
+                          _changeVariantsSet.showWireframe = v ?? false;
+                          _fbx3DAnimationController
+                              .showWireframe(_changeVariantsSet.showWireframe);
+                        },
+                        controlAffinity: ListTileControlAffinity.leading,
+                      ),
+                      CheckboxListTile(
+                        title: Text("Rnd colors"),
+                        value: changeVariantsGet._rndColor,
+                        onChanged: (v) {
+                          _changeVariantsSet.rndColor = v ?? false;
+                          _fbx3DAnimationController.setRandomColors(
+                              randomColor(opacity: 0.7),
+                              randomColor(opacity: 0.3));
+                        },
+                        controlAffinity: ListTileControlAffinity.leading,
+                      )
+                    ],
+                  )),
+              alignment: Alignment.topRight,
+            )
+          ],
+        )));
   }
 }

@@ -1,34 +1,34 @@
 /// Copyright (C) 2015 Brendan Duncan. All rights reserved.
+import 'package:vector_math/vector_math.dart';
+
 import '../fbx_element.dart';
 import 'fbx_frame_rate.dart';
 import 'fbx_object.dart';
 import 'fbx_property.dart';
 import 'fbx_scene.dart';
-import 'package:vector_math/vector_math.dart';
 
 class FbxGlobalSettings extends FbxObject {
-  FbxProperty upAxis;
-  FbxProperty upAxisSign;
-  FbxProperty frontAxis;
-  FbxProperty frontAxisSign;
-  FbxProperty coordAxis;
-  FbxProperty coordAxisSign;
-  FbxProperty originalUpAxis;
-  FbxProperty originalUpAxisSign;
-  FbxProperty unitScaleFactor;
-  FbxProperty originalUnitScaleFactor;
-  FbxProperty ambientColor;
-  FbxProperty defaultCamera;
-  FbxProperty timeMode;
-  FbxProperty timeProtocol;
-  FbxProperty snapOnFrameMode;
-  FbxProperty timeSpanStart;
-  FbxProperty timeSpanStop;
-  FbxProperty customFrameRate;
+  late FbxProperty upAxis,
+      upAxisSign,
+      frontAxis,
+      frontAxisSign,
+      coordAxis,
+      coordAxisSign,
+      originalUpAxis,
+      originalUpAxisSign,
+      unitScaleFactor,
+      originalUnitScaleFactor,
+      ambientColor,
+      defaultCamera,
+      timeMode,
+      timeProtocol,
+      snapOnFrameMode,
+      timeSpanStart,
+      timeSpanStop,
+      customFrameRate;
 
   FbxGlobalSettings(FbxElement element, FbxScene scene)
-    : super(0, '', 'GlobalSettings', element, scene) {
-
+      : super(0, '', 'GlobalSettings', element, scene) {
     upAxis = addProperty('UpAxis', 1);
     upAxisSign = addProperty('UpAxisSign', 1);
     frontAxis = addProperty('FrontAxis', 2);
@@ -73,8 +73,8 @@ class FbxGlobalSettings extends FbxObject {
           } else if (p.properties[0] == 'OriginalUnitScaleFactor') {
             originalUnitScaleFactor.value = p.getDouble(vi);
           } else if (p.properties[0] == 'AmbientColor') {
-            ambientColor.value = Vector3(p.getDouble(vi), p.getDouble(vi),
-                                         p.getDouble(vi));
+            ambientColor.value =
+                Vector3(p.getDouble(vi), p.getDouble(vi), p.getDouble(vi));
           } else if (p.properties[0] == 'DefaultCamera') {
             defaultCamera.value = p.getString(vi);
           } else if (p.properties[0] == 'TimeMode') {
@@ -94,11 +94,11 @@ class FbxGlobalSettings extends FbxObject {
       }
     }
 
-    scene.startFrame = FbxFrameRate.timeToFrame(timeSpanStart.value as int,
-                                                timeMode.value as int);
+    scene.startFrame = FbxFrameRate.timeToFrame(
+        timeSpanStart.value as int, timeMode.value as int);
 
-    scene.endFrame = FbxFrameRate.timeToFrame(timeSpanStop.value as int,
-                                              timeMode.value as int);
+    scene.endFrame = FbxFrameRate.timeToFrame(
+        timeSpanStop.value as int, timeMode.value as int);
 
     scene.currentFrame = scene.startFrame;
   }

@@ -28,7 +28,7 @@ import 'scene/fbx_global_settings.dart';
 
 /// Decodes an FBX file into an [FbxScene] structure.
 class FbxLoader {
-  FbxScene load(List<int> bytes) {
+  FbxScene? load(List<int> bytes) {
     final input = InputBuffer(bytes);
 
     if (FbxBinaryParser.isValidFile(input)) {
@@ -41,10 +41,10 @@ class FbxLoader {
 
     final scene = FbxScene();
 
-    var elem = _parser.nextElement();
+    var elem = _parser?.nextElement();
     while (elem != null) {
       _loadRootElement(elem, scene);
-      elem = _parser.nextElement();
+      elem = _parser?.nextElement();
     }
 
     _parser = null;
@@ -73,7 +73,7 @@ class FbxLoader {
   }
 
   void _loadTakes(FbxElement e, FbxScene scene) {
-    String currentTake;
+    String? currentTake;
     for (final c in e.children) {
       if (c.id == 'Current') {
         currentTake = c.properties[0] as String;
@@ -238,7 +238,7 @@ class FbxLoader {
   }
 
   void _loadConnections(FbxElement e, FbxScene scene) {
-    final SCENE = _parser.sceneName();
+    final SCENE = _parser?.sceneName();
 
     for (final c in e.children) {
       if (c.id == 'C' || c.id == 'Connect') {
@@ -314,7 +314,7 @@ class FbxLoader {
 
         //logger("-----PARSER prop len " + c.properties.length.toString());
 
-        var name = _parser.getName(rawName);
+        var name = _parser?.getName(rawName);
 
         FbxObject node;
 
@@ -358,7 +358,7 @@ class FbxLoader {
           scene.allObjects[name] = limb;
           scene.skeletonNodes.add(limb);
         } else {
-          var tk = name.split(':');
+          var tk = name!.split(':');
           if (tk.length > 1) {
             name = tk[1];
 
@@ -401,7 +401,7 @@ class FbxLoader {
           rawName = c.properties[0] as String;
         }
 
-        final name = _parser.getName(rawName);
+        final name = _parser?.getName(rawName);
 
         final material = FbxMaterial(id, name, c, scene);
         scene.allObjects[rawName] = material;
@@ -422,7 +422,7 @@ class FbxLoader {
           rawName = c.properties[0] as String;
         }
 
-        final name = _parser.getName(rawName);
+        final name = _parser?.getName(rawName);
 
         final stack = FbxAnimStack(id, name, c, scene);
         if (id != 0) {
@@ -443,7 +443,7 @@ class FbxLoader {
           rawName = c.properties[0] as String;
         }
 
-        final name = _parser.getName(rawName);
+        final name = _parser?.getName(rawName);
 
         final layer = FbxAnimLayer(id, name, c, scene);
         if (id != 0) {
@@ -466,7 +466,7 @@ class FbxLoader {
           //type = c.properties[1];
         }
 
-        final name = _parser.getName(rawName);
+        final name = _parser?.getName(rawName);
 
         final curve = FbxAnimCurveNode(id, name, c, scene);
         if (id != 0) {
@@ -489,7 +489,7 @@ class FbxLoader {
           type = c.properties[1] as String;
         }
 
-        final name = _parser.getName(rawName);
+        final name = _parser?.getName(rawName);
 
         if (type == 'Skin') {
           final skin = FbxSkinDeformer(id, name, c, scene);
@@ -521,7 +521,7 @@ class FbxLoader {
           rawName = c.properties[0] as String;
         }
 
-        final name = _parser.getName(rawName);
+        final name = _parser?.getName(rawName);
 
         final texture = FbxTexture(id, name, c, scene);
 
@@ -543,7 +543,7 @@ class FbxLoader {
           rawName = c.properties[0] as String;
         }
 
-        final name = _parser.getName(rawName);
+        final name = _parser?.getName(rawName);
 
         final folder = FbxObject(id, name, c.id, c, scene);
         scene.allObjects[rawName] = folder;
@@ -563,7 +563,7 @@ class FbxLoader {
           rawName = c.properties[0] as String;
         }
 
-        final name = _parser.getName(rawName);
+        final name = _parser?.getName(rawName);
 
         final constraint = FbxObject(id, name, c.id, c, scene);
         scene.allObjects[rawName] = constraint;
@@ -583,7 +583,7 @@ class FbxLoader {
           rawName = c.properties[0] as String;
         }
 
-        final name = _parser.getName(rawName);
+        final name = _parser?.getName(rawName);
 
         final animCurve = FbxAnimCurve(id, name, c, scene);
         scene.allObjects[rawName] = animCurve;
@@ -603,7 +603,7 @@ class FbxLoader {
           rawName = c.properties[0] as String;
         }
 
-        final name = _parser.getName(rawName);
+        final name = _parser?.getName(rawName);
 
         final node = FbxNodeAttribute(id, name, c.id, c, scene);
         scene.allObjects[rawName] = node;
@@ -633,7 +633,7 @@ class FbxLoader {
           rawName = c.properties[0] as String;
         }
 
-        final name = _parser.getName(rawName);
+        final name = _parser?.getName(rawName);
 
         final video = FbxVideo(id, name, c.id, c, scene);
 
@@ -671,6 +671,6 @@ class FbxLoader {
   }
 
   //int _fileVersion = 0;
-  FbxParser _parser;
+  late FbxParser? _parser;
 }
 

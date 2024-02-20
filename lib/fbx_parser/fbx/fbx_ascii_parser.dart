@@ -7,7 +7,7 @@ import 'input_buffer.dart';
 class FbxAsciiParser extends FbxParser {
   static const FILE_HEADER = '; FBX';
 
-  InputBuffer _input;
+  InputBuffer? _input;
 
   static bool isValidFile(InputBuffer input) {
     final fp = input.offset;
@@ -34,43 +34,43 @@ class FbxAsciiParser extends FbxParser {
   }
 
   @override
-  FbxElement nextElement() {
+  FbxElement? nextElement() {
     if (_input == null) {
       return null;
     }
 
-    var tk = _nextToken(_input);
+    var tk = _nextToken(_input!);
     if (tk == '}') {
       return null;
     }
 
-    if (_nextToken(_input) != ':') {
+    if (_nextToken(_input!) != ':') {
       return null;
     }
 
-    final elem = FbxElement(tk);
+    final elem = FbxElement(tk!);
 
-    final sp = _input.offset;
-    tk = _nextToken(_input);
+    final sp = _input!.offset;
+    tk = _nextToken(_input!);
 
     // If the next token is a node definition (nodeType:*), then back up
     // and save it for the next node.
-    final tk2 = _nextToken(_input, peek: true);
+    final tk2 = _nextToken(_input!, peek: true);
     if (tk2 == ':') {
-      _input.offset = sp;
+      _input!.offset = sp;
       return elem;
     }
 
     if (tk != '{') {
-      while (!_input.isEOS) {
+      while (!_input!.isEOS) {
         elem.properties.add(tk);
-        tk = _nextToken(_input, peek: true);
+        tk = _nextToken(_input!, peek: true);
         if (tk == ',' || tk == '{') {
-          _nextToken(_input); // consume the ,{ token
+          _nextToken(_input!); // consume the ,{ token
           if (tk == '{') {
             break;
           }
-          tk = _nextToken(_input);
+          tk = _nextToken(_input!);
         } else {
           break;
         }
@@ -94,7 +94,7 @@ class FbxAsciiParser extends FbxParser {
   @override
   String getName(String rawName) => rawName.split('::').last;
 
-  String _nextToken(InputBuffer input, {bool peek = false}) {
+  String? _nextToken(InputBuffer input, {bool peek = false}) {
     _skipWhitespace(input);
 
     if (input.isEOS) {
